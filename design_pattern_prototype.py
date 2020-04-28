@@ -4,6 +4,7 @@ import datetime
 import random
 import time
 
+
 class IPrototype(abc.ABC):
 
     @abc.abstractclassmethod
@@ -39,9 +40,8 @@ class RandomValueWithSeed(IPrototype):
 
     def clone(self):
         random.setstate(self._seeded_random_state)
-        self._value = random.randint(1,100)
+        self._value = random.randint(1, 100)
         self._seeded_random_state = random.getstate()
-        print(f"seed is : {self._seed} | value is : {self._value}")
         return copy.deepcopy(self)
 
     def __str__(self):
@@ -63,39 +63,37 @@ class ObjectFactory:
 
     @staticmethod
     def initialize():
-        ObjectFactory.__type1Value1 = TrackedValue(1)
-        ObjectFactory.__type1Value2 = TrackedValue(2)
-        ObjectFactory.__type2Value1 = RandomValueWithSeed(1)
-        ObjectFactory.__type2Value2 = RandomValueWithSeed(2)
+        ObjectFactory.__TrackedValue1 = TrackedValue(1)
+        ObjectFactory.__TrackedValue2 = TrackedValue(2)
+        ObjectFactory.__RandomValueWithSeed1 = RandomValueWithSeed(1)
+        ObjectFactory.__RandomValueWithSeed200 = RandomValueWithSeed(200)
 
     @staticmethod
-    def getType1Value1():
-        return ObjectFactory.__type1Value1.clone()
+    def TrackedValueOf1():
+        return ObjectFactory.__TrackedValue1.clone()
 
     @staticmethod
-    def getType1Value2():
-        return ObjectFactory.__type1Value2.clone()
+    def TrackedValueOf2():
+        return ObjectFactory.__TrackedValue2.clone()
 
     @staticmethod
-    def getType2Value1():
-        return ObjectFactory.__type2Value1.clone()
+    def RandomValueWithSeed1():
+        return ObjectFactory.__RandomValueWithSeed1.clone()
 
     @staticmethod
-    def getType2Value2():
-        return ObjectFactory.__type2Value2.clone()
+    def RandomValueWithSeed200():
+        return ObjectFactory.__RandomValueWithSeed200.clone()
 
 
 def main():
     ObjectFactory.initialize()
 
-    type1_sample_list = []
+    sample_list = []
 
     samples = 10
 
-    
     for _ in range(samples):
-        print(_)
-        type1_sample_list.append(ObjectFactory.getType1Value1())
+        sample_list.append(ObjectFactory.TrackedValueOf2())
 
     for sample_value in range(samples):
         for cross_compare_value in range(sample_value+1, samples):
@@ -103,12 +101,13 @@ def main():
             print(
                 f'Sample {sample_value} == Sample {cross_compare_value} => {sample_value is cross_compare_value}')
 
-    for sample in type1_sample_list:
+    for sample in sample_list:
         print(f'{id(sample)} - {sample}')
 
-
+    print('----------------------------------------------------------------')
+    sample_list = []
     for _ in range(samples):
-        type1_sample_list.append(ObjectFactory.getType2Value1())
+        sample_list.append(ObjectFactory.RandomValueWithSeed200())
 
     for sample_value in range(samples):
         for cross_compare_value in range(sample_value+1, samples):
@@ -116,7 +115,7 @@ def main():
             print(
                 f'Sample {sample_value} == Sample {cross_compare_value} => {sample_value is cross_compare_value}')
 
-    for sample in type1_sample_list:
+    for sample in sample_list:
         print(f'{id(sample)} - {sample}')
 
 
