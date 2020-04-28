@@ -42,6 +42,7 @@ class RandomValueWithSeed(IPrototype):
         random.setstate(self._seeded_random_state)
         self._value = random.randint(1, 100)
         self._seeded_random_state = random.getstate()
+
         return copy.deepcopy(self)
 
     def __str__(self):
@@ -55,12 +56,7 @@ class ObjectFactory:
     initialization and then allows instatiation
     of the classes from these prototypes.
     """
-
-    __type1Value1 = None
-    __type1Value2 = None
-    __type2Value1 = None
-    __type2Value2 = None
-
+    
     @staticmethod
     def initialize():
         ObjectFactory.__TrackedValue1 = TrackedValue(1)
